@@ -4,9 +4,6 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 
-import { HomePage } from '../pages/home/home';
-import { TabsPage } from '../pages/tabs/tabs';
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthProvider } from '../providers/auth/auth';
@@ -15,9 +12,8 @@ import { FunctionsProvider } from '../providers/functions/functions';
 
 @NgModule({
   declarations: [
-    MyApp,
-    HomePage,
-    TabsPage
+    MyApp
+    
   ],
   imports: [
     BrowserModule,
@@ -25,9 +21,8 @@ import { FunctionsProvider } from '../providers/functions/functions';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    HomePage,
-    TabsPage
+    MyApp
+    
   ],
   providers: [
     StatusBar,
