@@ -1,25 +1,74 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, App, LoadingController, ModalController} from 'ionic-angular';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Storage } from '@ionic/storage';
 
-/**
- * Generated class for the SigninPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { AuthProvider } from '../../../providers/auth/auth';
 
-@IonicPage()
+
+
+@IonicPage({
+  name: 'auth-signin'
+})
 @Component({
   selector: 'page-signin',
   templateUrl: 'signin.html',
 })
 export class SigninPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  form : FormGroup;
+  hasError: boolean;
+  errorMessage: string;
+
+  constructor(
+    private app: App,
+    private navCtrl: NavController, 
+    private loadingCtrl: LoadingController,
+    private modalCtrl: ModalController,
+    private formBuilder: FormBuilder,
+    private storage: Storage,
+    private auth: AuthProvider
+
+  ) {
+    this.form = this.formBuilder.group({
+      email: ['', Validators.required],
+      password: ['', Validators.required]
+    });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SigninPage');
+  signInWithEmail(){
+    const loading = this.loadingCtrl.create({
+      content: 'Por favor, aguarde..'
+    });
+    loading.present();
+
+    this.auth.signInWithEmailAndPassword(this.form.value.email, this.form.value.password)
+    .then(() => {
+      loading.dismiss();
+      this.navCtrl.setRoot('tabs');
+    }, (error) => {
+      loading.dismiss();
+      switch (error.code) {
+        case 'auth/invalid-email':
+          this.errorMessage = 'Insira um email válido.';
+          break;
+        case 'auth/wrong-password':
+          this.errorMessage = 'Combinação de usuário e senha incorreta.';
+          break;
+        case 'auth/user-not-found':
+          this.errorMessage = 'Combinação de usu[ario e senha incorreta.';
+          break;
+        default:
+          this.errorMessage = error;
+          break;
+      }
+      this.hasError = true;
+    });
   }
 
+  navigateTo(page) {
+    this.navCtrl.push(page);
+  }
+
+  
 }
