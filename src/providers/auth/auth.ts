@@ -1,11 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Observable';
 
 import * as firebase from 'firebase/app';
-import { Platform } from 'ionic-angular/platform/platform';
-import { LoadingController } from 'ionic-angular/components/loading/loading-controller';
+import { Platform, LoadingController } from 'ionic-angular';
+
 import { DataProvider } from '../data/data';
 import { FunctionsProvider } from '../functions/functions';
 
@@ -15,7 +15,6 @@ export class AuthProvider {
   public user: Observable<firebase.User>;
 
   constructor(
-    public http: HttpClient,
     private platform: Platform,
     private loadingCtrl: LoadingController,
     public afAuth: AngularFireAuth,
